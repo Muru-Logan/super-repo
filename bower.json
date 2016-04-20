@@ -1,0 +1,9 @@
+{
+  "name": "social-app",
+  
+"dependecies": {
+    "angular": "~1.4.6",
+    "angular-mocks": "~1.4.6",
+    "angular-router": "~1.4.6"
+  }
+}
