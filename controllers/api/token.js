@@ -11,8 +11,7 @@ router.post('/generate', function(req,res,next)
     var pwd = req.body.password
     
     console.log(usr + pwd)
-    
-        
+            
     //var token = jwt.encode({username: usr}, key)
     //res.json(token)
             

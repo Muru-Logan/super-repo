@@ -42,7 +42,6 @@ router.post('/', function(req,res, next)
 		  res.status(201).json(post)	
 		})
 
-
 	//console.log(req.body.username)
 	//console.log(req.body.body)
 	//res.sendStatus(201)
