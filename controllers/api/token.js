@@ -25,6 +25,7 @@ router.post('/generate', function(req,res,next)
                         return res.status(200).json({"token":"", "err":"user not found"});
                     }
                     
+                    console.log("password" + user.password)
                     console.log("username:" + user.username)
                     var token = jwt.encode({username: usr}, key)
                     res.status(200).json({"token":token, "err":""})
