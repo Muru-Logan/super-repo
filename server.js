@@ -2,7 +2,7 @@ var express = require('express')
 var parser = require('body-parser')
 var logger = require('morgan')
 var Post = require('./models/post')
-
+var socket = require('./websockets')
 
 var app = express()
 app.use(parser.json())
@@ -19,4 +19,4 @@ var server = app.listen(2273, function()
 	console.log("Server is running successfully on 2273")
 })
     
-//require('./websockets').connect(server)
+socket.connect(server)

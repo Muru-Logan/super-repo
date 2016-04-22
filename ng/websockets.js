@@ -1,17 +1,18 @@
 angular.module('app')
     .run(function($rootScope){
-        var url = "ws://localhost:2001"
+        var url = "ws://localhost:2273"
         
         var connection = new WebSocket(url)
         
-        connection.onopen = function () {
-          console.log("web socket connected")
+        connection.onopen = function () {    
+            $rootScope.connectionStatus = "opened"
         }
         
         connection.onmessage = function(e){
-            console.log(e)
-            var payload = JSON.parse(e)
+            $rootScope.connectionStatus = e
+            var payload = JSON.parse(e.data)
             
+            $rootScope.connectionStatus = payload.data
             $rootScope.$broadcast('ws:' + payload.topic, payload.data)
         }
         

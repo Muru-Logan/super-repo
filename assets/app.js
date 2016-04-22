@@ -1,34 +1,44 @@
 angular.module('app',  ['ngRoute'])
 
 angular.module('app')
-   .controller('LoginCtrl', function($scope, $location, TokenSvc){
+        .controller('ApplicationCtrl', function($scope)
+        {
+            $scope.on('login', function(_, user){
+                $scope.currentUser = user
+            })
+        })
+angular.module('app')
+   .controller('LoginCtrl', function($scope, $location, $rootScope, TokenSvc){
        
        $scope.login = function(username, password)
        {
            var user = { username: username, password: password}
-           TokenSvc.generate(user).success(function(token)
-                                    {
-                                        $scope.token = token
-                                        
-                                         if ($scope.token.token != "")
-                                            {
-                                                $location.path('/posts')
-                                            }   
-                                        
-                                    })
+           TokenSvc.generate(user)
+                .success(function(token){
+                        $scope.token = token
+                        if ($scope.token.token != ""){
+                            $rootScope.loggedusername = user.username
+                            $location.path('/posts')
+                        } 
+                       /* if ($scope.token.err != ""){
+                            $scope.err = token.err
+                        } */                                           
+                })
           
        }
              
    })
+   
+   
 angular.module('app')
-.controller('PostsCtrl', function ($scope, $http, PostsSvc) {
+.controller('PostsCtrl', function ($scope, $http, $rootScope, PostsSvc) {
         
     $scope.addPost = function () {
            
              if ($scope.postBody) {
             
                   var post = { 
-                          username: "Muru",
+                          username: $rootScope.loggedusername,
                           body: $scope.postBody
                       }
                  PostsSvc.create(post)
@@ -37,17 +47,17 @@ angular.module('app')
                           body: $scope.postBody
                       })    */
                     .success(function (post){
-                          // $scope.posts.unshift(post)
-                          // $scope.postBody = null
+                         //  $scope.posts.unshift(post)
+                           $scope.postBody = null
                     })
         }
     }
         
-   /* $scope.$on('ws:new_post', function (_, post) {
+    $scope.$on('ws:new_post', function (_, post) {
                         $scope.$apply(function () {
                         $scope.posts.unshift(post)
                     })
-     })*/
+     })
         
         
     PostsSvc.fetch()
@@ -76,12 +86,27 @@ angular.module('app')
 
 
 angular.module('app')
+    .controller('RegisterCtrl', function ($scope, $location, UserSvc) {
+        
+        $scope.register = function (username, password) {
+            var user = {username: username, password:password}
+            
+            UserSvc.register(user).success(function()
+            {
+                $location.path('/')
+            })
+           
+        } 
+        
+    })
+angular.module('app')
     .config(['$routeProvider', function($routeProvider)
     {
         $routeProvider
         .when('/posts',  {controller: 'PostsCtrl', templateUrl: '/templates/posts.html'})
         .when('/register',  {controller: 'RegisterCtrl', templateUrl: '/templates/register.html'})
         .when('/',  {controller: 'LoginCtrl', templateUrl: '/templates/login.html'})   
+        .when('/login',  {controller: 'LoginCtrl', templateUrl: '/templates/login.html'})
     }])
 
 angular.module('app')
@@ -109,24 +134,29 @@ angular.module('app')
 angular.module('app')
    .service('UserSvc', function($http){
            
+       var svc = this;
        
+       svc.register = function(user){
+           return $http.post('/api/users',user)
+       }
        
    })
 
 angular.module('app')
     .run(function($rootScope){
-        var url = "ws://localhost:2001"
+        var url = "ws://localhost:2273"
         
         var connection = new WebSocket(url)
         
-        connection.onopen = function () {
-          console.log("web socket connected")
+        connection.onopen = function () {    
+            $rootScope.connectionStatus = "opened"
         }
         
         connection.onmessage = function(e){
-            console.log(e)
-            var payload = JSON.parse(e)
+            $rootScope.connectionStatus = e
+            var payload = JSON.parse(e.data)
             
+            $rootScope.connectionStatus = payload.data
             $rootScope.$broadcast('ws:' + payload.topic, payload.data)
         }
         

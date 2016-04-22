@@ -1,5 +1,5 @@
 var Post = require('../../models/post')
-//var ws = require('../../websockets')
+var ws = require('../../websockets')
 var router= require('express').Router()
 
 router.get('/', function(req, res, next)
@@ -12,7 +12,7 @@ router.get('/', function(req, res, next)
 			console.log(err)
 		     return next(err)
 		}
-		console.log(posts)
+		//console.log(posts)
 		res.status(200).json(posts)
 	})
 
@@ -38,13 +38,19 @@ router.post('/', function(req,res, next)
 			console.log('error')
 			return next(err)
 		 }
-		 //ws.broadcast('new_post', post)	 
+		 
+		 /*var new_post = {
+			 								id: post.id,
+											 username: post.username,
+											 body: post.body,
+											 createdby : post.createdby
+		 }*/
+		 		 
+		  ws.broadcast('new_post', post)	 
 		  res.status(201).json(post)	
 		})
 
-	//console.log(req.body.username)
-	//console.log(req.body.body)
-	//res.sendStatus(201)
+	
 })
 
 module.exports = router

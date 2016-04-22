@@ -25,6 +25,10 @@ router.post('/generate', function(req,res,next)
                         return res.status(200).json({"token":"", "err":"user not found"});
                     }
                     
+                    if (pwd != user.password){
+                        return res.status(200).json({"token":"", "err":"Invalid username/password, please try again"});
+                    }
+                    
                     console.log("password" + user.password)
                     console.log("username:" + user.username)
                     var token = jwt.encode({username: usr}, key)

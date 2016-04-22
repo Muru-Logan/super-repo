@@ -24,8 +24,6 @@ router.post('/', function(req,res, next)
           username : req.body.username,
           password : req.body.password
         })
-    //console.log(post.username)
-    //console.log(post.body)
     
     user.save(function(err, user)
         {
@@ -35,11 +33,6 @@ router.post('/', function(req,res, next)
              }
           res.status(201).json(user)    
         })
-
-
-    //console.log(req.body.username)
-    //console.log(req.body.body)
-    //res.sendStatus(201)
 })
 
 module.exports = router
