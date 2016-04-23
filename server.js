@@ -1,7 +1,7 @@
 var express = require('express')
 var parser = require('body-parser')
 var logger = require('morgan')
-var Post = require('./models/post')
+//var Post = require('./models/post')
 var socket = require('./websockets')
 
 var app = express()
@@ -14,7 +14,9 @@ app.use('/api/users', require('./controllers/api/users'))
 app.use('/api/token', require('./controllers/api/token'))
 app.use('/', require('./controllers/static'))
 
-var server = app.listen(2273, function()
+var port = process.env.PORT || 2273
+
+var server = app.listen(port, function()
 {
 	console.log("Server is running successfully on 2273")
 })
