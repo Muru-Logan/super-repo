@@ -1,8 +1,8 @@
 angular.module('app')
     .run(function($rootScope){
-        var server = location.origin.replace(/^https/, 'ws')
+        var url = location.origin.replace(/^https/, 'ws')
         //var url = "ws://localhost:2273"
-               
+                       
         var connection = new WebSocket(url)
         
         connection.onopen = function () {    
