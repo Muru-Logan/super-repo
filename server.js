@@ -5,7 +5,7 @@ var logger = require('morgan')
 var socket = require('./websockets')
 
 var app = express()
-app.use(parser.json())
+app.use(parser.json()) 
 
 app.use(logger('dev'))
 
@@ -18,7 +18,7 @@ var port = process.env.PORT || 2273
 
 var server = app.listen(port, function()
 {
-	console.log("Server is running successfully on 2273")
+	console.log("Server is running successfully on  " + port)
 })
     
 socket.connect(server)
