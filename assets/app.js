@@ -151,7 +151,7 @@ angular.module('app')
         }
         
         if (protocol == "https:"){
-                url = location.origin.replace(/^https/, 'ws')
+                url = location.origin.replace(/^https/, 'wss')
         }
         //var url = "ws://localhost:2273"
                      
