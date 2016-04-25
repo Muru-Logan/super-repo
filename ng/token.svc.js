@@ -9,13 +9,14 @@ angular.module('app')
                   // returns the user    
             return $http.post('api/token/validate', {
                                             headers: {'authorization': token}
+                                            
                                             })
         }
         
         // generate the token for given user
         svc.generate = function(user)
         {
-              return $http.post('/api/token/generate', user)    
+            return $http.post('/api/token/generate', user)    
         }
         
     })

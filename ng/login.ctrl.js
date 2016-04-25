@@ -7,8 +7,12 @@ angular.module('app')
            TokenSvc.generate(user)
                 .success(function(token){
                         $scope.token = token
+                        
                         if ($scope.token.token != ""){
+                            
                             $rootScope.loggedusername = user.username
+                            $rootScope.token = token.token
+                            
                             $location.path('/posts')
                         } 
                        /* if ($scope.token.err != ""){

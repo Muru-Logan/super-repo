@@ -19,6 +19,7 @@ router.get('/', function(req, res, next)
 router.post('/', function(req,res, next)
 {
     console.log('received');
+    var bCryptPwd = req.body.password
     var user = new User(
         {
           username : req.body.username,

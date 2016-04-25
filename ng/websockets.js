@@ -22,7 +22,16 @@ angular.module('app')
             var payload = JSON.parse(e.data)
             
             $rootScope.connectionStatus = payload.data
-            $rootScope.$broadcast('ws:' + payload.topic, payload.data)
+            if (protocol == "http:")
+            {
+               $rootScope.$broadcast('ws:' + payload.topic, payload.data) 
+            }
+            
+            if (protocol == "https:")
+            {
+               $rootScope.$broadcast('wss:' + payload.topic, payload.data) 
+            }
+            
         }
         
     })

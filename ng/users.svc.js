@@ -4,6 +4,7 @@ angular.module('app')
        var svc = this;
        
        svc.register = function(user){
+           
            return $http.post('/api/users',user)
        }
        
