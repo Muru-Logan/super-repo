@@ -180,8 +180,7 @@ angular.module('app')
             
             if (protocol == "https:")
             {
-               $rootScope.$
-               broadcast('wss:' + payload.topic, payload.data) 
+               $rootScope.$broadcast('wss:' + payload.topic, payload.data) 
             }
             
         }
