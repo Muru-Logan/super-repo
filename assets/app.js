@@ -16,8 +16,12 @@ angular.module('app')
            TokenSvc.generate(user)
                 .success(function(token){
                         $scope.token = token
+                        
                         if ($scope.token.token != ""){
+                            
                             $rootScope.loggedusername = user.username
+                            $rootScope.token = token.token
+                            
                             $location.path('/posts')
                         } 
                        /* if ($scope.token.err != ""){
@@ -120,13 +124,14 @@ angular.module('app')
                   // returns the user    
             return $http.post('api/token/validate', {
                                             headers: {'authorization': token}
+                                            
                                             })
         }
         
         // generate the token for given user
         svc.generate = function(user)
         {
-              return $http.post('/api/token/generate', user)    
+            return $http.post('/api/token/generate', user)    
         }
         
     })
@@ -137,6 +142,7 @@ angular.module('app')
        var svc = this;
        
        svc.register = function(user){
+           
            return $http.post('/api/users',user)
        }
        
@@ -154,6 +160,7 @@ angular.module('app')
                 url = location.origin.replace(/^https/, 'wss')
         }
         //var url = "ws://localhost:2273"
+        
                      
         var connection = new WebSocket(url)
         
@@ -166,7 +173,17 @@ angular.module('app')
             var payload = JSON.parse(e.data)
             
             $rootScope.connectionStatus = payload.data
-            $rootScope.$broadcast('ws:' + payload.topic, payload.data)
+            if (protocol == "http:")
+            {
+               $rootScope.$broadcast('ws:' + payload.topic, payload.data) 
+            }
+            
+            if (protocol == "https:")
+            {
+               $rootScope.$
+               broadcast('wss:' + payload.topic, payload.data) 
+            }
+            
         }
         
     })
