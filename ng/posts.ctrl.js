@@ -21,7 +21,15 @@ angular.module('app')
         }
     }
         
-    $scope.$on('ws:new_post', function (_, post) {
+    var protocol = $rootScope.protocol
+    if (protocol == "http:")   {
+        ws = 'ws:new_post'
+    }   
+    
+    if (protocol == "https:")   {
+        ws = 'wss:new_post'
+    }
+    $scope.$on(ws, function (_, post) {
                         $scope.$apply(function () {
                         $scope.posts.unshift(post)
                     })

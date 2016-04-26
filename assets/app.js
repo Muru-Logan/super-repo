@@ -57,7 +57,15 @@ angular.module('app')
         }
     }
         
-    $scope.$on('ws:new_post', function (_, post) {
+    var protocol = $rootScope.protocol
+    if (protocol == "http:")   {
+        ws = 'ws:new_post'
+    }   
+    
+    if (protocol == "https:")   {
+        ws = 'wss:new_post'
+    }
+    $scope.$on(ws, function (_, post) {
                         $scope.$apply(function () {
                         $scope.posts.unshift(post)
                     })
@@ -151,6 +159,7 @@ angular.module('app')
 angular.module('app')
     .run(function($rootScope){
         var protocol = location.protocol
+        $rootScope.protocol = protocol
         var url = ""
         if (protocol == "http:"){
                 url = location.origin.replace(/^http/, 'ws')
@@ -173,16 +182,17 @@ angular.module('app')
             var payload = JSON.parse(e.data)
             
             $rootScope.connectionStatus = payload.data
+            var ws = 'ws:'
             if (protocol == "http:")
             {
-               $rootScope.$broadcast('ws:' + payload.topic, payload.data) 
+               ws = 'ws:' 
             }
             
             if (protocol == "https:")
             {
-               $rootScope.$broadcast('wss:' + payload.topic, payload.data) 
+               ws = 'wss:' 
             }
-            
+            $rootScope.$broadcast(ws + payload.topic, payload.data)
         }
         
     })

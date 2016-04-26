@@ -1,6 +1,7 @@
 angular.module('app')
     .run(function($rootScope){
         var protocol = location.protocol
+        $rootScope.protocol = protocol
         var url = ""
         if (protocol == "http:"){
                 url = location.origin.replace(/^http/, 'ws')
@@ -23,16 +24,17 @@ angular.module('app')
             var payload = JSON.parse(e.data)
             
             $rootScope.connectionStatus = payload.data
+            var ws = 'ws:'
             if (protocol == "http:")
             {
-               $rootScope.$broadcast('ws:' + payload.topic, payload.data) 
+               ws = 'ws:' 
             }
             
             if (protocol == "https:")
             {
-               $rootScope.$broadcast('wss:' + payload.topic, payload.data) 
+               ws = 'wss:' 
             }
-            
+            $rootScope.$broadcast(ws + payload.topic, payload.data)
         }
         
     })
