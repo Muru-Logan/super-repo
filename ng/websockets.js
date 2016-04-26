@@ -10,6 +10,7 @@ angular.module('app')
                 url = location.origin.replace(/^https/, 'wss')
         }
         //var url = "ws://localhost:2273"
+        
                      
         var connection = new WebSocket(url)
         
@@ -29,7 +30,8 @@ angular.module('app')
             
             if (protocol == "https:")
             {
-               $rootScope.$broadcast('wss:' + payload.topic, payload.data) 
+               $rootScope.$
+               broadcast('wss:' + payload.topic, payload.data) 
             }
             
         }

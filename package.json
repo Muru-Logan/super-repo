@@ -16,6 +16,7 @@
     "wscat": "^1.0.1"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "mocha": "^2.4.5",
     "protractor": "^3.2.2"
   }
